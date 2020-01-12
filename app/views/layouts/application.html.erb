@@ -16,6 +16,9 @@
       
       <%= link_to "Logout", session_path, method: :delete,
       data: {confirm: "Are you sure you want to log out?"} %>
+      <% if current_user.is_admin? %>
+            <%= link_to 'Dashboard', admin_dashboard_index_path %>
+        <% end %>
   <% else %>
     <%= link_to "Login", new_session_path %>
     <%= link_to "Sign Up", new_user_path %>

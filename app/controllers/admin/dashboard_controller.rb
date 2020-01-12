@@ -15,7 +15,7 @@ class Admin::DashboardController < ApplicationController
   private
 
   def authorize_admin!
-    redirect_to root_path, alert: "Access denied!" unless current_user.admin?
+    redirect_to root_path, alert: "Access denied!" unless current_user.is_admin?
   end
 
 end
