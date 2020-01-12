@@ -1,0 +1,24 @@
+<h1>Review Edit Form</h1>
+<h1>What do you think of the product?</h1>
+<%= form_with(model: [@product, @review], local: true) do |f| %>
+    <% if @review.errors.present? %>
+        <p class="form-errors">
+            <%= @review.errors.full_messages.join(", ") %>
+        </p>
+    <% end %>
+    <div>
+        <%= f.label :rating %>
+        <%= f.number_field :rating, in: 1..5 %> 
+    </div>
+
+    <div class="form-group">
+        <%= f.text_area(
+            :body,
+            cols: 50,
+            rows: 3,
+            placeholder:"e.g. Really great product!",
+            class: "form-control"
+        ) %>
+    </div>
+    <%= f.submit 'Review' %>
+<% end %>

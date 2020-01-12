@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AmazingAmazon</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+  </head>
+
+  <body>
+  <nav>
+  <% if user_signed_in? %>
+      <span>Hello, <%= current_user.first_name %>!</span>
+      
+      <%= link_to "Logout", session_path, method: :delete,
+      data: {confirm: "Are you sure you want to log out?"} %>
+  <% else %>
+    <%= link_to "Login", new_session_path %>
+    <%= link_to "Sign Up", new_user_path %>
+  <% end %>
+    
+    <hr>
+    <%= link_to 'Home', root_path %>
+    <%= link_to 'About', about_path %>
+    <%= link_to 'Contact Us', contact_path %>
+    <%= link_to 'Products', products_path %>
+    <%= link_to 'New Product', new_product_path %>
+  </nav>
+  <% flash.each do |type, message| %>
+        <div class="flash-message alert alert-<%= type %>">
+          <%= message %>
+        </div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>
