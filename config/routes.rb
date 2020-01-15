@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   # patch "/products/:id" => "products#update"
 
   resources :products do
+    resources :favourites, shallow: true, only: [:create, :destroy]
+    get :favourited, on: :collection
     # creates the following route for us:
     # post('/products/:product_id/reviews', { to: 'reviews#create', as: :product_reviews })
     # Which, due to the `as` creates a method called `product_reviews_path`
@@ -38,7 +40,10 @@ Rails.application.routes.draw do
     # the value for `:product_id` in the path
     # It returns the value: '/products/:product_id/reviews' with the :product_id
     # "filled in
-    resources :reviews, shallow: true, only: [:create, :destroy, :update, :edit]
+    resources :reviews, shallow: true, only: [:create, :destroy, :update, :edit] do
+      resources :likes, only: [:create, :destroy]
+      # get :liked, on: :collection
+    end
   end
 
   patch "/reviews/:id/toggle" => "reviews#toggle_hidden", as: "toggle_hidden"

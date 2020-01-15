@@ -2,6 +2,8 @@ class Product < ApplicationRecord
   #Associations
   belongs_to :user
   has_many :reviews, dependent: :destroy
+  has_many :favourites, dependent: :destroy
+  has_many :fans, through: :favourites, source: :user
 
   #Call Backs - Rails HOOK
   before_validation :set_default_price

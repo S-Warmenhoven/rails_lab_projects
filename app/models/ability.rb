@@ -46,5 +46,34 @@ class Ability
       #in this case only the answer owner can manage the answer, but if you do ||
       # then answer and question owner can manage
     end
+
+    can :crud, NewsArticle do |news_article|
+      news_article.user == user
+    end
+
+    can :like, Review do |review|
+      user.persisted? && review.user != user
+      #persisted makes sure user is signed in
+      #so guest users can't like
+    end
+    # Can also write abilities like: 
+    # can :manage, Question, user_id: user.id
+
+    can :destroy, Like do |like|
+      like.user = user
+    end
+
+    can :favourite, Product do |product|
+      user.persisted? && product.user != user
+      #persisted makes sure user is signed in
+      #so guest users can't favourite
+    end
+    # Can also write abilities like: 
+    # can :manage, Question, user_id: user.id
+
+    can :destroy, Favourite do |favourite|
+      favourite.user = user
+    end
+    
   end
 end

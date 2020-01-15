@@ -23,12 +23,12 @@ class ProductsController < ApplicationController
 
     def show
         @new_review = Review.new
-        
         if can? :crud, @product
             @reviews = @product.reviews.order(created_at: :desc)
         else
             @reviews = @product.reviews.where(hidden: false).order(created_at: :desc)
         end
+        @favourite = @product.favourites.find_by(user: current_user)
     end
 
     def edit    
@@ -47,6 +47,10 @@ class ProductsController < ApplicationController
     def destroy
         @product.destroy
         redirect_to products_path
+    end 
+
+    def favourited 
+        @products = current_user.favourited_products.order('favourites.created_at DESC')
     end
 
     private

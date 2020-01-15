@@ -1,9 +1,10 @@
 class NewsArticle < ApplicationRecord
+belongs_to :user
 validates :title, presence: true, uniqueness: { case_sensitive: false }
 validates :description, presence: true
 validate :published_after_create
 
-before_validation :titleized_title
+before_save :titleized_title
 
 def publish
   update(published_at: Time.zone.now)
@@ -13,7 +14,7 @@ def titleized_title
   self.title = self.title&.titleize
 end
 
-scope :published, -> { where( 'published_at > created_at' ) }
+scope :published_at, -> { where( 'published_at > created_at' ) }
 # Same as
 # def self.published
 #   where( 'published_at > created_at' )

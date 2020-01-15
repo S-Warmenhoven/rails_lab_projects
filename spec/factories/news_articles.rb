@@ -20,6 +20,7 @@ FactoryBot.define do
     
     sequence(:title) { |n| Faker::Quote.most_interesting_man_in_the_world + " #{n}" }
     description { Faker::Hacker.say_something_smart }
-    
+    association(:user, factory: :user)
+    #if the factory has the same name as the association, like above, and just say 'user'
   end
 end

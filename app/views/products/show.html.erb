@@ -15,6 +15,21 @@
 <%= link_to 'Edit', edit_product_path(@product.id)%>
 <% end %>
 
+<% if @favourite.present? && can?(:destroy, @favourite) %>
+    <%=link_to(
+        icon('far', 'flag'),
+        favourite_path(@favourite),
+        method: :delete
+    )%> | 
+<% elsif can?(:favourite, @product) %>
+    <%=link_to(
+        icon('fas', 'flag'),
+        product_favourites_path(@product),
+        method: :post
+    )%> | 
+<% end %>
+<small><%= pluralize(@product.favourites.count, "favourite") %></small>
+
 <%#
   New Review Form
   `form_with model: [@product, @review]` requires there to be a method called
@@ -68,6 +83,22 @@
     <% if can? :crud, @product %>
       <%= link_to "#{review.hidden ? 'Show' : 'Hide' }", toggle_hidden_path(review), method: :patch %>
     <% end %>
+    <% like = review.likes.find_by(user_id:current_user) %>
+    <% if like && can?(:destroy, like) %>
+    <%=link_to(
+        "Unlike",
+        like_path(like),
+        method: :delete
+    )%> | 
+    <% elsif can?(:like, review) %>
+      <%=link_to(
+        "Like",
+        review_likes_path(review),
+        method: :post
+      )%> | 
+    <% end %>
+    <small><%= pluralize(review.likes.count, "like") %></small>
+
   </div>
 <% end %>
 </section>
